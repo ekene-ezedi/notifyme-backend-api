@@ -1,0 +1,37 @@
+{
+  "name": "notifymeapp",
+  "version": "1.0.0",
+  "description": "This is a notification system\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[C \u001b[Dsimple notification system",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest --watchAll --verbose --runInBand --coverage",
+    "start": "node app.js"
+  },
+  "author": "Ezedi Chris Okonji-ezedi\u001b[D\u001b[D\u001b[D\u001b[E\u001b[C\u001b[C\u001b[C\u001b[C",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.8",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "config": "^3.2.5",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fawn": "^2.1.5",
+    "helmet": "^3.21.2",
+    "jimp": "^0.14.0",
+    "joi": "^14.3.1",
+    "joi-objectid": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.19",
+    "mongoose": "^5.8.11",
+    "multer": "^1.4.2",
+    "node-rsa": "^1.0.8",
+    "nodemailer": "^6.4.2"
+  },
+  "devDependencies": {
+    "jest": "^25.2.3",
+    "supertest": "^4.0.2"
+  }
+}
