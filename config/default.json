@@ -1,3 +1,4 @@
 {
-    "db":"mongodb://notifyme_admin:htiimigthtiitwNTFM95@ds044709.mlab.com:44709/notifyme"
+    "db":"mongodb://notifyme_admin:htiimigthtiitwNTFM95@ds044709.mlab.com:44709/notifyme",
+    "db1":"mongodb://127.0.0.1/notifymeapp"
 }

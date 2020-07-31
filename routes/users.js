@@ -60,7 +60,6 @@ router.post('/',async (req,res)=>{
             res.status(200).json({"success":true});
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({error});
     }
 
@@ -100,19 +99,19 @@ router.post('/login', async (req,res)=>{
         const payload = User.pickPayloadProps(user);
         const token = User.generateToken(payload);
 
-        const split = token.split('.');
-        const headerPayload = split[0]+"."+split[1];
-        const signature = "."+split[2];
+        // const split = token.split('.');
+        // const headerPayload = split[0]+"."+split[1];
+        // const signature = "."+split[2];
 
 
-        res.cookie('headerPayload',headerPayload);
-        res.cookie('signature',signature,{httpOnly:true,path:'/'});
-        return res.status(200).json({"success":true});
+        // res.cookie('headerPayload',headerPayload);
+        // res.cookie('signature',signature,{httpOnly:true,path:'/'});
+
+        
+        return res.status(200).json({"success":true,token});
 
     }
     } catch (error) {
-        console.log('from login');
-        console.log(error)
         return res.status(500).json(error);
     }
 });

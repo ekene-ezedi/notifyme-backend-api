@@ -1,14 +1,9 @@
 //import required modules
 const jwt = require('jsonwebtoken');
-/**
- * check if req.header has token
- * if token exists verify and call next middleware
- * 
- */
 
  module.exports = function(req,res,next){
      //retrieve token from request header
-     const token = req.cookies.headerPayload+req.cookies.signature
+     const token = req.header('x-auth-token');
         
      //throw error if token doesnt exists
      if (!token) return res.status(401).send('Unauthorised access');
@@ -24,6 +19,7 @@ const jwt = require('jsonwebtoken');
      next();
 
      } catch (error) {
+         console.log(error)
          res.status(400).send('Invalid token');
      }
  }
