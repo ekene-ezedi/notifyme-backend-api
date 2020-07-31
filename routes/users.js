@@ -105,8 +105,8 @@ router.post('/login', async (req,res)=>{
         const signature = "."+split[2];
 
 
-        res.cookie('headerPayload',headerPayload,{path:'/'});
-        res.cookie('signature',signature,{httpOnly:true,sameSite:true,path:'/'});
+        res.cookie('headerPayload',headerPayload);
+        res.cookie('signature',signature,{httpOnly:true,path:'/'});
         return res.status(200).json({"success":true});
 
     }
