@@ -6,9 +6,19 @@ const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 
-const myOAuth2Client = new OAuth2(process.env.GMAIL_CLIENT_ID,process.env.GMAIL_CLIENT_SECRET,process.env.GMAIL_PLAYGROUND);
+const GMAIL_CLIENT_ID="380221621589-d3e6o527c5f5k43em2uroghs5h0psnqj.apps.googleusercontent.com"
 
-myOAuth2Client.setCredentials({refresh_token:process.env.GMAIL_REFRESH_TOKEN});
+const GMAIL_CLIENT_SECRET="MKPik5kkqJLipq4pfQ5ppgT7"
+
+const GMAIL_PLAYGROUND="https://developers.google.com/oauthplayground"
+
+const GMAIL_REFRESH_TOKEN="1//04csBOSG0Ca0YCgYIARAAGAQSNwF-L9IrTGUva0mEMgkt95dVEV6JnSvAR7j686zb7GKdFMoI5QyY_avN7XP2p-z7kgi4o86IxCY"
+
+GMAIL_CLIENT_EMAIL="teamnotifyme@gmail.com"
+
+const myOAuth2Client = new OAuth2(GMAIL_CLIENT_ID,GMAIL_CLIENT_SECRET,GMAIL_PLAYGROUND);
+
+myOAuth2Client.setCredentials({refresh_token:GMAIL_REFRESH_TOKEN});
 
 const myAccessToken = myOAuth2Client.getAccessToken()
 
