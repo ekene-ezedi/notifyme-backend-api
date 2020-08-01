@@ -11,6 +11,8 @@ const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 
 const myOAuth2Client = new OAuth2(process.env.GMAIL_CLIENT_ID,process.env.GMAIL_CLIENT_SECRET,process.env.GMAIL_PLAYGROUND);
+console.log('VIEWING..............................')
+console.log(process.env.GMAIL_CLIENT_ID)
 
 myOAuth2Client.setCredentials({refresh_token:process.env.GMAIL_REFRESH_TOKEN});
 
