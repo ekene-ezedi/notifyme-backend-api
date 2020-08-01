@@ -52,13 +52,14 @@ router.post('/',async (req,res)=>{
         user.password = hash;
         user.verificationcode = vToken;
 
+        await user.save();
+        res.status(200).json({"success":true});
         
-        const response = await User.sendVerificationEmail(user);
-        if (response.rejected = []) {
-            //save user and verification code to db
-            await user.save();
-            res.status(200).json({"success":true});
-        }
+        // const response = await User.sendVerificationEmail(user);
+        // if (response.rejected = []) {
+        //     //save user and verification code to db
+            
+        // }
     } catch (error) {
         res.status(500).json({error});
     }
@@ -85,15 +86,15 @@ router.post('/login', async (req,res)=>{
 
         if (!isMatch) return res.status(400).json({"error":"Password incorrect"});
 
-        if (!user.isverified) {
-            const verificationDetails = {
-                "email":user.email,
-                "firstname":user.firstname,
-                "_id":user._id,
-                "verificationcode":user.verificationcode
-            };
-            return res.status(400).json({error:"Account not Verified!",verificationDetails});
-        };
+        // if (!user.isverified) {
+        //     const verificationDetails = {
+        //         "email":user.email,
+        //         "firstname":user.firstname,
+        //         "_id":user._id,
+        //         "verificationcode":user.verificationcode
+        //     };
+        //     return res.status(400).json({error:"Account not Verified!",verificationDetails});
+        // };
         
         //generate token and send with res
         const payload = User.pickPayloadProps(user);
