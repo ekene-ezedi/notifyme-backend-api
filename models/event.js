@@ -12,17 +12,7 @@ myOAuth2Client.setCredentials({refresh_token:process.env.GMAIL_REFRESH_TOKEN});
 
 const myAccessToken = myOAuth2Client.getAccessToken()
 
-//nodemailer config
-const transport = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        type: "OAuth2",
-        user: process.env.GMAIL_CLIENT_EMAIL, //your gmail account you used to set the project up in google cloud console"
-        clientId: process.env.GMAIL_CLIENT_ID,
-        clientSecret: process.env.GMAIL_CLIENT_SECRET,
-        refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-        accessToken: myAccessToken //access token variable we defined earlier
-    }});
+
 
 const eventSchema = new Schema({
     name:{
@@ -99,7 +89,18 @@ module.exports.validateEvent = function (event) {
     return result;
 }
 
-
+//nodemailer config
+const transport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        type: "OAuth2",
+        user: process.env.GMAIL_CLIENT_EMAIL, //your gmail account you used to set the project up in google cloud console"
+        clientId: process.env.GMAIL_CLIENT_ID,
+        clientSecret: process.env.GMAIL_CLIENT_SECRET,
+        refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+        accessToken: myAccessToken //access token variable we defined earlier
+    }});
+    
 //send email notification
 module.exports.sendEmailNotification = function (data,event) {
       data.subscribers.forEach(user => {
