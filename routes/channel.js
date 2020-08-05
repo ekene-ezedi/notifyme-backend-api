@@ -4,26 +4,8 @@ const router = express.Router();
 const Channel = require('../models/channel');
 const User = require('../models/users');
 const auth = require('../middlewares/auth');
-const multer = require('multer');
-const crypto = require('crypto');
-const path = require('path');
-
-//multer storage
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/channelbg')
-      },
-    filename: function (req, file, cb) {
-        crypto.pseudoRandomBytes(16, function(err, raw) {
-            if (err) return cb(err);
-          
-            cb(null, raw.toString('hex') + path.extname(file.originalname));
-            
-          });
-    }
-});
-
-let upload = multer({storage:storage});
+const {uploads,dataUri} = require('../middlewares/multer');
+const {cloudinary} = require('../middlewares/cloudinary-config');
 
 //Create channel
 router.post('/', auth, async (req,res)=>{
@@ -160,19 +142,28 @@ router.put('/unsubscribe/:id', auth, async(req,res)=>{
 });
 
 //upload channel background
-router.put('/upload/:id',auth,upload.single('channelbg'), async(req,res)=>{
-    try {
-        const host = req.headers.host;
-        const filePath = req.protocol + "://" + host + '/' + req.file.path;
-        let filename = req.file.destination + '/' + req.file.filename;
-        
-
-        const channel = await Channel.findByIdAndUpdate({_id:req.params.id},{imgurl:filePath},{new:true});
-        res.status(200).json({channel});
-
-    } catch (error) {
-        res.status(500).json({error});
-    }
+router.post('/upload/:id',auth, uploads.single('image'), async(req,res)=>{
+  try {
+    const channel = await Channel.findById(req.params.id);
+    if(req.file) {
+        const file = dataUri(req).content;
+        return cloudinary.uploader.upload(file,{
+            public_id:channel.public_id,
+            invalidate:true
+        })
+        .then((result)=>{
+            const image = result.secure_url;
+            channel.public_id = result.public_id;
+            channel.imgurl = result.secure_url;
+            channel.save().then((event)=>{
+                res.status(200).json({success: true,image});
+            });
+        }).catch((err)=> res.status(500).json({msg:"Something went wrong",err}));
+    } 
+  } catch (error) {
+    res.status(500).json({error});
+  }
+      
 });
 
 //search for channel

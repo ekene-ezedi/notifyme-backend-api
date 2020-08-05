@@ -30,7 +30,10 @@ const channelSchema = new Schema({
     },
     imgurl:{
         type:String,
-        default:'../../../../assets/images/images-button.png'
+        default:'https://res.cloudinary.com/dz3c3h3jx/image/upload/v1596669125/assets/images-button_mzdqp5.png'
+    },
+    public_id:{
+        type:String,
     }
 });
 

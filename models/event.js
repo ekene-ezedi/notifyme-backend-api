@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Joi = require('joi');
 const nodemailer = require('nodemailer');
-const { google } = require("googleapis");
-const OAuth2 = google.auth.OAuth2;
+// const { google } = require("googleapis");
+// const OAuth2 = google.auth.OAuth2;
 
-const myOAuth2Client = new OAuth2(process.env.GMAIL_CLIENT_ID,process.env.GMAIL_CLIENT_SECRET,process.env.GMAIL_PLAYGROUND);
+// const myOAuth2Client = new OAuth2(process.env.GMAIL_CLIENT_ID,process.env.GMAIL_CLIENT_SECRET,process.env.GMAIL_PLAYGROUND);
 
-myOAuth2Client.setCredentials({refresh_token:process.env.GMAIL_REFRESH_TOKEN});
+// myOAuth2Client.setCredentials({refresh_token:process.env.GMAIL_REFRESH_TOKEN});
 
-const myAccessToken = myOAuth2Client.getAccessToken()
+// const myAccessToken = myOAuth2Client.getAccessToken()
 
 
 
@@ -61,7 +61,10 @@ const eventSchema = new Schema({
     },
     imgurl:{
         type:String,
-        default:'../../../../assets/images/images-button.png'
+        default:'https://res.cloudinary.com/dz3c3h3jx/image/upload/v1596669125/assets/images-button_mzdqp5.png'
+    },
+    public_id:{
+        type:String,
     }
 });
 
@@ -90,16 +93,16 @@ module.exports.validateEvent = function (event) {
 }
 
 //nodemailer config
-const transport = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        type: "OAuth2",
-        user: process.env.GMAIL_CLIENT_EMAIL, //your gmail account you used to set the project up in google cloud console"
-        clientId: process.env.GMAIL_CLIENT_ID,
-        clientSecret: process.env.GMAIL_CLIENT_SECRET,
-        refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-        accessToken: myAccessToken //access token variable we defined earlier
-    }});
+// const transport = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//         type: "OAuth2",
+//         user: process.env.GMAIL_CLIENT_EMAIL, //your gmail account you used to set the project up in google cloud console"
+//         clientId: process.env.GMAIL_CLIENT_ID,
+//         clientSecret: process.env.GMAIL_CLIENT_SECRET,
+//         refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+//         accessToken: myAccessToken //access token variable we defined earlier
+//     }});
     
 //send email notification
 module.exports.sendEmailNotification = function (data,event) {

@@ -5,26 +5,8 @@ const Event = require('../models/event');
 const User = require('../models/users');
 const Channel = require('../models/channel');
 const auth = require('../middlewares/auth');
-const multer = require('multer');
-const crypto = require('crypto');
-const path = require('path');
-
-//multer storage
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/channelbg')
-      },
-    filename: function (req, file, cb) {
-        crypto.pseudoRandomBytes(16, function(err, raw) {
-            if (err) return cb(err);
-          
-            cb(null, raw.toString('hex') + path.extname(file.originalname));
-            
-          });
-    }
-});
-
-let upload = multer({storage:storage});
+const {uploads,dataUri} = require('../middlewares/multer');
+const {cloudinary} = require('../middlewares/cloudinary-config');
 
 //get events by subscriptions
 router.get('/', auth, async(req,res)=>{
@@ -199,18 +181,31 @@ router.put('/like/:id', auth, async(req,res)=>{
 });
 
 //upload event background
-router.put('/upload/:id',auth,upload.single('eventbg'), async(req,res)=>{
+router.post('/upload/:id',auth,uploads.single('image'), async(req,res)=>{
     try {
-        const host = req.headers.host;
-        const filePath = req.protocol + "://" + host + '/' + req.file.path;
-        let filename = req.file.destination + '/' + req.file.filename;
-        
-        const event = await Event.findByIdAndUpdate({_id:req.params.id},{imgurl:filePath},{new:true});
-        res.status(200).json({event});
-
-    } catch (error) {
-    res.status(200).json({error});
-    }
+        const event = await Event.findById(req.params.id);
+        if(req.file) {
+            const file = dataUri(req).content;
+            return cloudinary.uploader.upload(file,{
+                public_id:event.public_id,
+                invalidate:true
+            })
+            .then((result)=>{
+                const image = result.secure_url;
+                event.public_id = result.public_id;
+                event.imgurl = result.secure_url;
+                event.save().then((event)=>{
+                    res.status(200).json({success: true,image});
+                })
+            }).catch((err)=> {
+                console.log(err)
+                res.status(500).json({msg:"Something went wrong",err});
+            });
+        } 
+      } catch (error) {
+          console.log(error)
+        res.status(500).json({error});
+      }
 });
 
 module.exports = router;
