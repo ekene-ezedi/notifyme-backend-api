@@ -108,7 +108,7 @@ module.exports.pickPayloadProps = function(user){
 
 //generate verification token
 module.exports.generateToken = function(payload){
-    const vToken = jwt.sign(payload,process.env.PRIVATE_ACCESS_TOKEN_SECRET,{ algorithm:'RS256',expiresIn:'24h'});
+    const vToken = jwt.sign(payload,JSON.parse(process.env.PRIVATE_ACCESS_TOKEN_SECRET),{ algorithm:'RS256',expiresIn:'24h'});
     return vToken;
 }
 
