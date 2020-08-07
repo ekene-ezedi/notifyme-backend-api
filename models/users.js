@@ -7,15 +7,37 @@ const schema = mongoose.Schema;
 const Joi = require('joi');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
-// const { google } = require("googleapis");
-// const OAuth2 = google.auth.OAuth2;
+const { google } = require('googleapis');
+ 
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.GMAIL_CLIENT_ID,
+    process.env.GMAIL_CLIENT_SECRET,
+    process.env.GMAIL_REDIRECT_URL,
+  );
+ 
+  const code = "4/2wHkS8PUSx3bYfOwFUsQHoF8JXNqT8fyWk5or91N29MN03kWMWVV4_QU5vwlXvujtgdcrawjJho1RtTRCrtOG_0";
 
-// const myOAuth2Client = new OAuth2(process.env.GMAIL_CLIENT_ID,process.env.GMAIL_CLIENT_SECRET,process.env.GMAIL_PLAYGROUND);
+//   const getToken = async () => {
+//     const { tokens } = await oauth2Client.getToken(code);
+//     // console.info(tokens);
+//   };
+ 
+//   getToken();
 
-
-// myOAuth2Client.setCredentials({refresh_token:process.env.GMAIL_REFRESH_TOKEN});
-
-// const myAccessToken = myOAuth2Client.getAccessToken()
+  // Generate a url that asks permissions for Gmail scopes
+  const GMAIL_SCOPES = [
+    'https://mail.google.com/',
+    'https://www.googleapis.com/auth/gmail.modify',
+    'https://www.googleapis.com/auth/gmail.compose',
+    'https://www.googleapis.com/auth/gmail.send',
+  ];
+ 
+  const url = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: GMAIL_SCOPES,
+  });
+ 
+//   console.info(`authUrl: ${url}`);
 
 //user schema
 const userSchema = new schema({
@@ -113,16 +135,21 @@ module.exports.generateToken = function(payload){
 }
 
 //nodemailer config
-// const transport = nodemailer.createTransport({
-//     service: "gmail",
-//     auth: {
-//          type: "OAuth2",
-//          user: process.env.GMAIL_CLIENT_EMAIL, //your gmail account you used to set the project up in google cloud console"
-//          clientId: process.env.GMAIL_CLIENT_ID,
-//          clientSecret: process.env.GMAIL_CLIENT_SECRET,
-//          refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-//          accessToken: myAccessToken //access token variable we defined earlier
-//     }});
+const transport = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      type: 'OAuth2',
+      user: process.env.GMAIL_CLIENT_EMAIL,
+      clientId: process.env.GMAIL_CLIENT_ID,
+      clientSecret: process.env.GMAIL_CLIENT_SECRET,
+      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+      accessToken: process.env.GMAIL_ACCESS_TOKEN,
+      expires: Number.parseInt(process.env.GMAIL_TOKEN_EXPIRE, 10),
+    },
+  });
+
 
 //send verification email
 module.exports.sendVerificationEmail = async function(user){

@@ -33,16 +33,15 @@ router.post('/',async (req,res)=>{
 
         user.password = hash;
         user.verificationcode = vToken;
-
-        await user.save();
-        res.status(200).json({"success":true});
         
-        // const response = await User.sendVerificationEmail(user);
-        // if (response.rejected = []) {
-        //     //save user and verification code to db
-            
-        // }
+        const response = await User.sendVerificationEmail(user);
+        if (response.rejected = []) {
+            //save user and verification code to db
+            await user.save();
+            res.status(200).json({"success":true});
+        }
     } catch (error) {
+        console.log(error)
         res.status(500).json({error});
     }
 
