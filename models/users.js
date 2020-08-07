@@ -10,9 +10,9 @@ const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
  
   const oauth2Client = new google.auth.OAuth2(
-    process.env.GMAIL_CLIENT_ID,
-    process.env.GMAIL_CLIENT_SECRET,
-    process.env.GMAIL_REDIRECT_URL,
+    JSON.parse(process.env.GMAIL_CLIENT_ID),
+    JSON.parse(process.env.GMAIL_CLIENT_SECRET),
+    JSON.parse(process.env.GMAIL_REDIRECT_URL),
   );
  
   const code = "4/2wHkS8PUSx3bYfOwFUsQHoF8JXNqT8fyWk5or91N29MN03kWMWVV4_QU5vwlXvujtgdcrawjJho1RtTRCrtOG_0";
@@ -141,12 +141,12 @@ const transport = nodemailer.createTransport({
     secure: true,
     auth: {
       type: 'OAuth2',
-      user: process.env.GMAIL_CLIENT_EMAIL,
-      clientId: process.env.GMAIL_CLIENT_ID,
-      clientSecret: process.env.GMAIL_CLIENT_SECRET,
-      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-      accessToken: process.env.GMAIL_ACCESS_TOKEN,
-      expires: Number.parseInt(process.env.GMAIL_TOKEN_EXPIRE, 10),
+      user: JSON.parse(process.env.GMAIL_CLIENT_EMAIL),
+      clientId: JSON.parse(process.env.GMAIL_CLIENT_ID),
+      clientSecret: JSON.parse(process.env.GMAIL_CLIENT_SECRET),
+      refreshToken: JSON.parse(process.env.GMAIL_REFRESH_TOKEN),
+      accessToken: JSON.parse(process.env.GMAIL_ACCESS_TOKEN),
+      expires: Number.parseInt(JSON.parse(process.env.GMAIL_TOKEN_EXPIRE), 10),
     },
   });
 
