@@ -9,13 +9,13 @@ const _ = require('lodash');
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
  
-  const oauth2Client = new google.auth.OAuth2(
-    JSON.parse(process.env.GMAIL_CLIENT_ID),
-    JSON.parse(process.env.GMAIL_CLIENT_SECRET),
-    JSON.parse(process.env.GMAIL_REDIRECT_URL),
-  );
+//   const oauth2Client = new google.auth.OAuth2(
+//     JSON.parse(process.env.GMAIL_CLIENT_ID),
+//     JSON.parse(process.env.GMAIL_CLIENT_SECRET),
+//     JSON.parse(process.env.GMAIL_REDIRECT_URL),
+//   );
  
-  const code = "4/2wHkS8PUSx3bYfOwFUsQHoF8JXNqT8fyWk5or91N29MN03kWMWVV4_QU5vwlXvujtgdcrawjJho1RtTRCrtOG_0";
+//   const code = "4/2wHkS8PUSx3bYfOwFUsQHoF8JXNqT8fyWk5or91N29MN03kWMWVV4_QU5vwlXvujtgdcrawjJho1RtTRCrtOG_0";
 
 //   const getToken = async () => {
 //     const { tokens } = await oauth2Client.getToken(code);
@@ -25,17 +25,17 @@ const { google } = require('googleapis');
 //   getToken();
 
   // Generate a url that asks permissions for Gmail scopes
-  const GMAIL_SCOPES = [
-    'https://mail.google.com/',
-    'https://www.googleapis.com/auth/gmail.modify',
-    'https://www.googleapis.com/auth/gmail.compose',
-    'https://www.googleapis.com/auth/gmail.send',
-  ];
+//   const GMAIL_SCOPES = [
+//     'https://mail.google.com/',
+//     'https://www.googleapis.com/auth/gmail.modify',
+//     'https://www.googleapis.com/auth/gmail.compose',
+//     'https://www.googleapis.com/auth/gmail.send',
+//   ];
  
-  const url = oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: GMAIL_SCOPES,
-  });
+//   const url = oauth2Client.generateAuthUrl({
+//     access_type: 'offline',
+//     scope: GMAIL_SCOPES,
+//   });
  
 //   console.info(`authUrl: ${url}`);
 
@@ -128,11 +128,16 @@ module.exports.pickPayloadProps = function(user){
     return payload;
 }
 
-//generate verification token
+// generate verification token
 module.exports.generateToken = function(payload){
     const vToken = jwt.sign(payload,JSON.parse(process.env.PRIVATE_ACCESS_TOKEN_SECRET),{ algorithm:'RS256',expiresIn:'24h'});
     return vToken;
 }
+
+// module.exports.generateToken = function(payload){
+//     const vToken = jwt.sign(payload,process.env.PRIVATE_ACCESS_TOKEN_SECRET,{ algorithm:'RS256',expiresIn:'24h'});
+//     return vToken;
+// }
 
 //nodemailer config
 const transport = nodemailer.createTransport({

@@ -12,6 +12,8 @@ const jwt = require('jsonwebtoken');
          //decode and verify token
      const decoded = jwt.verify(token, JSON.parse(process.env.PUBLIC_ACCESS_TOKEN_SECRET), {algorithms:'RS256',complete:true});
 
+    // const decoded = jwt.verify(token,process.env.PUBLIC_ACCESS_TOKEN_SECRET, {algorithms:'RS256',complete:true});
+
      //assign req.user to decoded result
      req.user = decoded.payload;
 

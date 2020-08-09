@@ -67,28 +67,19 @@ router.post('/login', async (req,res)=>{
 
         if (!isMatch) return res.status(400).json({"error":"Password incorrect"});
 
-        // if (!user.isverified) {
-        //     const verificationDetails = {
-        //         "email":user.email,
-        //         "firstname":user.firstname,
-        //         "_id":user._id,
-        //         "verificationcode":user.verificationcode
-        //     };
-        //     return res.status(400).json({error:"Account not Verified!",verificationDetails});
-        // };
+        if (!user.isverified) {
+            const verificationDetails = {
+                "email":user.email,
+                "firstname":user.firstname,
+                "_id":user._id,
+                "verificationcode":user.verificationcode
+            };
+            return res.status(400).json({error:"Account not Verified!",verificationDetails});
+        };
         
         //generate token and send with res
         const payload = User.pickPayloadProps(user);
         const token = User.generateToken(payload);
-
-        // const split = token.split('.');
-        // const headerPayload = split[0]+"."+split[1];
-        // const signature = "."+split[2];
-
-
-        // res.cookie('headerPayload',headerPayload);
-        // res.cookie('signature',signature,{httpOnly:true,path:'/'});
-
         
         return res.status(200).json({"success":true,token});
 
