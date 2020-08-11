@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "jest --watchAll --verbose --runInBand --coverage",
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "author": "Ezedi Chris Okonji-ezedi\u001b[D\u001b[D\u001b[D\u001b[E\u001b[C\u001b[C\u001b[C\u001b[C",
   "license": "ISC",

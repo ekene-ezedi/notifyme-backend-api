@@ -7,7 +7,7 @@ const schema = mongoose.Schema;
 const Joi = require('joi');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
+// const { google } = require('googleapis');
  
 //   const oauth2Client = new google.auth.OAuth2(
 //     JSON.parse(process.env.GMAIL_CLIENT_ID),
@@ -134,10 +134,10 @@ module.exports.generateToken = function(payload){
     return vToken;
 }
 
-// module.exports.generateToken = function(payload){
-//     const vToken = jwt.sign(payload,process.env.PRIVATE_ACCESS_TOKEN_SECRET,{ algorithm:'RS256',expiresIn:'24h'});
-//     return vToken;
-// }
+module.exports.generateToken = function(payload){
+    const vToken = jwt.sign(payload,process.env.PRIVATE_ACCESS_TOKEN_SECRET,{ algorithm:'RS256',expiresIn:'24h'});
+    return vToken;
+}
 
 //nodemailer config
 const transport = nodemailer.createTransport({
