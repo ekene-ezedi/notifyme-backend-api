@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Joi = require('joi');
 const nodemailer = require('nodemailer');
+const webpush = require('web-push');
+const vapidKeys = {
+    "publickey":process.env.VAPID_PUBLIC_KEY,
+    "privatekey":process.env.VAPID_PRIVATE_KEY
+}
 // const { google } = require("googleapis");
 // const OAuth2 = google.auth.OAuth2;
 
@@ -133,4 +138,15 @@ module.exports.sendEmailNotification = function (data,event) {
     });
     const value = Promise.all([res])
     return value;
+}
+
+//notify subscribers
+module.exports.notify_subscribers = function(user_sub,payload){
+    webpush.setVapidDetails(
+        'mailto:example@yourdomain.org',
+        vapidKeys.publickey,
+        vapidKeys.privatekey
+      );
+
+       return Promise.all( user_sub.map(sub=>webpush.sendNotification(sub,JSON.stringify(payload))))
 }

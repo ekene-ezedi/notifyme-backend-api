@@ -7,38 +7,14 @@ const schema = mongoose.Schema;
 const Joi = require('joi');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
-// const { google } = require('googleapis');
+const { google } = require('googleapis');
  
-//   const oauth2Client = new google.auth.OAuth2(
-//     JSON.parse(process.env.GMAIL_CLIENT_ID),
-//     JSON.parse(process.env.GMAIL_CLIENT_SECRET),
-//     JSON.parse(process.env.GMAIL_REDIRECT_URL),
-//   );
+  const oauth2Client = new google.auth.OAuth2(
+    JSON.parse(process.env.GMAIL_CLIENT_ID),
+    JSON.parse(process.env.GMAIL_CLIENT_SECRET),
+    JSON.parse(process.env.GMAIL_REDIRECT_URL),
+  );
  
-//   const code = "4/2wHkS8PUSx3bYfOwFUsQHoF8JXNqT8fyWk5or91N29MN03kWMWVV4_QU5vwlXvujtgdcrawjJho1RtTRCrtOG_0";
-
-//   const getToken = async () => {
-//     const { tokens } = await oauth2Client.getToken(code);
-//     // console.info(tokens);
-//   };
- 
-//   getToken();
-
-  // Generate a url that asks permissions for Gmail scopes
-//   const GMAIL_SCOPES = [
-//     'https://mail.google.com/',
-//     'https://www.googleapis.com/auth/gmail.modify',
-//     'https://www.googleapis.com/auth/gmail.compose',
-//     'https://www.googleapis.com/auth/gmail.send',
-//   ];
- 
-//   const url = oauth2Client.generateAuthUrl({
-//     access_type: 'offline',
-//     scope: GMAIL_SCOPES,
-//   });
- 
-//   console.info(`authUrl: ${url}`);
-
 //user schema
 const userSchema = new schema({
     firstname:{
@@ -134,10 +110,10 @@ module.exports.generateToken = function(payload){
     return vToken;
 }
 
-module.exports.generateToken = function(payload){
-    const vToken = jwt.sign(payload,process.env.PRIVATE_ACCESS_TOKEN_SECRET,{ algorithm:'RS256',expiresIn:'24h'});
-    return vToken;
-}
+// module.exports.generateToken = function(payload){
+//     const vToken = jwt.sign(payload,process.env.PRIVATE_ACCESS_TOKEN_SECRET,{ algorithm:'RS256',expiresIn:'24h'});
+//     return vToken;
+// }
 
 //nodemailer config
 const transport = nodemailer.createTransport({
@@ -148,8 +124,8 @@ const transport = nodemailer.createTransport({
       type: 'OAuth2',
       user: JSON.parse(process.env.GMAIL_CLIENT_EMAIL),
       clientId: JSON.parse(process.env.GMAIL_CLIENT_ID),
-      clientSecret: JSON.parse(process.env.GMAIL_CLIENT_SECRET),
-      refreshToken: JSON.parse(process.env.GMAIL_REFRESH_TOKEN),
+      clientSecret:JSON.parse(process.env.GMAIL_CLIENT_SECRET),
+      refreshToken:JSON.parse(process.env.GMAIL_REFRESH_TOKEN),
       accessToken: JSON.parse(process.env.GMAIL_ACCESS_TOKEN),
       expires: Number.parseInt(JSON.parse(process.env.GMAIL_TOKEN_EXPIRE), 10),
     },
@@ -161,7 +137,7 @@ module.exports.sendVerificationEmail = async function(user){
     return new Promise((resolve,reject)=>{
         const output = `
         <div>
-            <p>Welcome ${user.firstname}, Thank you for joining notifymeapp, now click on the link below to verify your account</p><br>
+            <p>Welcome ${user.firstname}, Thank you for joining notifyme, now click on the link below to verify your account</p><br>
             <a target="_blank" href="${process.env.CLIENT_BASE_URL}/verifyaccount/${user.verificationcode}" style="padding: 15px; background-color: blue; border: none; color: white; font-size: 20px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); text-decoration: none;">Verify Account</a><br>
             <p>This link is valid for 24hrs!</p>
         </div>
@@ -173,7 +149,7 @@ module.exports.sendVerificationEmail = async function(user){
             text:'Verify your account',
             html:output
         };
-    
+
          transport.sendMail(mailOptions, function (error,info){
             if (error) {
                 reject(error);

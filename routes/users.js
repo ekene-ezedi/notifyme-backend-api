@@ -118,6 +118,7 @@ router.put('/resend_verification_email', async(req,res)=>{
         }
 
     } catch (error) {
+        console.log(error)
             res.status(500).json({"success":false});
     }
 });
@@ -189,13 +190,6 @@ router.put('/:vtoken', async (req,res)=>{
         //generate token and send with response
         const payload = User.pickPayloadProps(user);
         token = User.generateToken(payload);
-
-        const split = token.split('.');
-        const headerPayload = split[0]+"."+split[1];
-        const signature = "."+split[2];
-
-        res.cookie('headerPayload',headerPayload,{path:'/'});
-        res.cookie('signature',signature,{httpOnly:true,sameSite:true,path:'/'});
 
         return res.status(200).json({"success":true,token});
     } catch (error) {

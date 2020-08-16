@@ -24,6 +24,7 @@ const channelSchema = new Schema({
         required:true
     },
     subscribers:[],
+    subscriptions:[],
     category:{
         type:String,
         required:true

@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Channel = require('../models/channel');
 const User = require('../models/users');
+const Event = require('../models/event');
 const auth = require('../middlewares/auth');
 const {uploads,dataUri} = require('../middlewares/multer');
 const {cloudinary} = require('../middlewares/cloudinary-config');
@@ -118,12 +119,30 @@ router.delete('/:id', auth, async(req,res)=>{
 
 router.put('/subscribe/:id', auth, async(req,res)=>{ 
     try {
-        const channel = await Channel.findByIdAndUpdate({_id:req.params.id},{"$addToSet":{subscribers:req.user.email}},{new:true});
-        if (channel) {
-           await User.findByIdAndUpdate({_id:req.user._id},{"$addToSet":{subscriptions:req.params.id}},{new:true});
-           res.status(200).json({"success":true,channel});
-        }     
+        const subscription = [];
+        subscription.push(req.body);
+
+        const channel = await Channel.findByIdAndUpdate({_id:req.params.id},{"$addToSet":{subscribers:req.user.email,subscriptions:subscription}},{new:true});
+
+        await User.findByIdAndUpdate({_id:req.user._id},{"$addToSet":{subscriptions:req.params.id}},{new:true});
+
+        const payload = {
+            "notification": {
+                "title":channel.name ,
+                "body": "Thank you for subscribing, we'll send you updates frequently",
+                "data": {
+                    "dateOfArrival":Date.now(),
+                    "primarykey":1,
+                },
+                "icon": "https://res.cloudinary.com/dz3c3h3jx/image/upload/v1597244167/assets/android-icon-36x36_cdcmpe.png",
+                "vibrate": [100,50,100]
+              }
+        };
+        const result = Event.notify_subscribers(subscription,payload);
+        result.then(()=>res.status(200).json({"success":true,channel}))
+              .catch(err=>console.log('from server'+err))
     } catch (error) {
+        console.error(error);
         res.status(500).json({error});
     }
 });
