@@ -138,7 +138,7 @@ module.exports.sendVerificationEmail = async function(user){
         const output = `
         <div>
             <p>Welcome ${user.firstname}, Thank you for joining notifyme, now click on the link below to verify your account</p><br>
-            <a target="_blank" href="${process.env.CLIENT_BASE_URL}/verifyaccount/${user.verificationcode}" style="padding: 15px; background-color: blue; border: none; color: white; font-size: 20px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); text-decoration: none;">Verify Account</a><br>
+            <a target="_blank" href="${JSON.parse(process.env.CLIENT_BASE_URL)}/verifyaccount/${user.verificationcode}" style="padding: 15px; background-color: blue; border: none; color: white; font-size: 20px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); text-decoration: none;">Verify Account</a><br>
             <p>This link is valid for 24hrs!</p>
         </div>
       `;
