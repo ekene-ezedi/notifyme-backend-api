@@ -158,7 +158,7 @@ router.put('/password_reset/:token', async (req,res)=>{
         const token = req.params.token;
 
         //verify token
-        const decoded = jwt.verify(token,process.env.PUBLIC_ACCESS_TOKEN_SECRET, {complete:true});
+        const decoded = jwt.verify(token,JSON.parse(process.env.PUBLIC_ACCESS_TOKEN_SECRET), {complete:true});
 
         //retrieve email
         const email = decoded.payload.email;
@@ -179,7 +179,7 @@ router.put('/password_reset/:token', async (req,res)=>{
 router.put('/:vtoken', async (req,res)=>{
     try {
         //verify verification code
-        let token = jwt.verify(req.params.vtoken, process.env.PUBLIC_ACCESS_TOKEN_SECRET, {algorithms:'RS256',complete:true});
+        let token = jwt.verify(req.params.vtoken, JSON.parse(process.env.PUBLIC_ACCESS_TOKEN_SECRET), {algorithms:'RS256',complete:true});
 
         //retrieve email from token
         const id = token.payload._id;
