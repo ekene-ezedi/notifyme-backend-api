@@ -23,7 +23,7 @@ router.get('/', auth, async(req,res)=>{
 //get events user is attendding
 router.get('/attending', auth, async(req,res)=>{
     try {
-        const events = await Event.find({"likes":{"$all":[req.user._id]}});
+        const events = await Event.find({"attendees":{"$all":[req.user._id]}});
         res.status(200).json({"success":true, events});
     } catch (error) {
         res.status(500).json({error});
@@ -44,7 +44,7 @@ router.post('/notify_subscribers', auth, async(req,res)=>{
                 "data": {
                     "dateOfArrival":Date.now(),
                     "primarykey":1,
-                    "url":`${process.env.CLIENT_BASE_URL}/event/${req.body._id}`
+                    "url":`${JSON.parse(process.env.CLIENT_BASE_URL)}/event/${req.body._id}`
                 },
                 "icon": "https://res.cloudinary.com/dz3c3h3jx/image/upload/v1597244167/assets/android-icon-36x36_cdcmpe.png",
                 "vibrate": [100,50,100]
@@ -143,7 +143,6 @@ router.put('/guests/:id', auth, async(req,res)=>{
 //attend event
 router.put('/attend/:id', auth, async (req, res) => {
     try {
-        // const event = await Event.findOne({"_id":req.params.id});
         const event = await Event.update({_id:req.params.id},{"$addToSet":{attendees:req.user._id}});
         
         res.status(200).json({"success":true,event});

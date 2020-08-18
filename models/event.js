@@ -50,9 +50,7 @@ const eventSchema = new Schema({
         type:String,
         required:true
     },
-    attendees:[{
-        type:String
-    }],
+    attendees:[],
     guests:[{
         name:String,
         role:String,
