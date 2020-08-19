@@ -21,6 +21,7 @@ router.post('/', auth, async (req,res)=>{
         await channel.save();
         res.status(200).json({"success":true,channel});
     } catch (error) {
+        console.log(error)
         res.status(500).json({"msg":error.details[0].message});
     }
 });
