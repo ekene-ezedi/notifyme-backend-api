@@ -5,6 +5,9 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const cloudinaryConfig = require('./middlewares/cloudinary-config').cloudinaryConfig;
 const app = express();
+const enforce = require('express-sslify');
+
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(cors({origin:true,credentials:true}));
 app.use(cookieParser());
 app.use('/public',express.static('public'));
