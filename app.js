@@ -19,7 +19,13 @@ app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(cookieParser());
 app.use("/public", express.static("public"));
 app.use("*", cloudinaryConfig);
-app.options("*", cors());
+app.options(
+  "*",
+  cors({
+    origin: "https://stark-spire-56927.herokuapp.com",
+    optionsSuccessStatus: 200,
+  })
+);
 //essential parts
 require("./startup/db")();
 require("./startup/routes")(app);
