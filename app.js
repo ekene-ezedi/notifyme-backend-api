@@ -15,7 +15,7 @@ app.use(function (req, res, next) {
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    "GET, POST, OPTIONS, PUT, DELETE, OPTIONS"
   );
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -27,25 +27,11 @@ app.use(function (req, res, next) {
 });
 
 app.use(enforce.HTTPS({ trustProtoHeader: true }));
-// app.use(
-//   cors({
-//     origin: "https://stark-spire-56927.herokuapp.com",
-//     credentials: true,
 
-//   })
-// );
 app.use(cookieParser());
 app.use("/public", express.static("public"));
 app.use("*", cloudinaryConfig);
-// app.options(
-//   "*",
-//   cors({
-//     origin: "https://stark-spire-56927.herokuapp.com",
-//     optionsSuccessStatus: 200,
-//     credentials: true,
-//   })
-// );
-//essential parts
+
 require("./startup/db")();
 require("./startup/routes")(app);
 
