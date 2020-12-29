@@ -11,7 +11,7 @@ const enforce = require("express-sslify");
 app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(
   cors({
-    origin: "https://stark-spire-56927.herokuapp.com/",
+    origin: "https://stark-spire-56927.herokuapp.com",
     credentials: true,
   })
 );
