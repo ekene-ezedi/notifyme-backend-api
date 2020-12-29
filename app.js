@@ -17,10 +17,10 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, DELETE, OPTIONS"
   );
-  // res.setHeader(
-  //   "Access-Control-Allow-Headers",
-  //   "X-Requested-With,content-type"
-  // );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type,x-auth-token"
+  );
   res.setHeader("Access-Control-Allow-Credentials", true);
 
   next();
