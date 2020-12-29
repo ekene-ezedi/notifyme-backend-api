@@ -24,6 +24,7 @@ app.options(
   cors({
     origin: "https://stark-spire-56927.herokuapp.com",
     optionsSuccessStatus: 200,
+    credentials: true,
   })
 );
 //essential parts
