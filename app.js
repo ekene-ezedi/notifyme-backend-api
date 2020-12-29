@@ -9,15 +9,17 @@ const app = express();
 const enforce = require("express-sslify");
 
 app.use(enforce.HTTPS({ trustProtoHeader: true }));
-app.use(
-  cors({
-    origin: "https://stark-spire-56927.herokuapp.com",
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://stark-spire-56927.herokuapp.com",
+//     credentials: true,
+
+//   })
+// );
 app.use(cookieParser());
 app.use("/public", express.static("public"));
 app.use("*", cloudinaryConfig);
+app.options("*", cors());
 //essential parts
 require("./startup/db")();
 require("./startup/routes")(app);
