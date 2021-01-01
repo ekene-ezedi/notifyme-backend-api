@@ -7,8 +7,15 @@ const cloudinaryConfig = require("./middlewares/cloudinary-config")
   .cloudinaryConfig;
 const app = express();
 
+const whitelist = [
+  "https://stark-spire-56927.herokuapp.com",
+  "http://localhost:4200",
+];
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+  const origin = req.headers.origin;
+  if (whitelist.indexOf(origin) > -1) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
 
   res.setHeader(
     "Access-Control-Allow-Methods",
