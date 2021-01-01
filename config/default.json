@@ -1,5 +1,5 @@
 {
   "dbmlab": "mongodb://notifyme_admin:htiimigthtiitwNTFM95@ds044709.mlab.com:44709/notifyme",
-  "db": "mongodb://127.0.0.1/notifymeapp",
-  "db1": "mongodb+srv://notifyme_admin:0Hfd1q1OhZHFc6bw@notifyme.2ers8.mongodb.net/notifyme?retryWrites=true&w=majority"
+  "db1": "mongodb://127.0.0.1/notifymeapp",
+  "db": "mongodb+srv://notifyme_admin:0Hfd1q1OhZHFc6bw@notifyme.2ers8.mongodb.net/notifyme?retryWrites=true&w=majority"
 }
