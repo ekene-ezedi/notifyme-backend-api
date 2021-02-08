@@ -38,6 +38,7 @@ router.get("/attending", auth, async (req, res) => {
 router.post("/notify_subscribers", auth, async (req, res) => {
   try {
     const channel = await Channel.findById({ _id: req.body.channelId });
+    console.log(channel);
 
     const sub = channel.subscriptions;
 
@@ -58,8 +59,6 @@ router.post("/notify_subscribers", auth, async (req, res) => {
     const result = await Event.notify_subscribers(sub, payload);
 
     res.status(200).json({ result });
-
-    console.log(payload);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
