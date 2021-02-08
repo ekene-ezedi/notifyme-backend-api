@@ -42,23 +42,23 @@ router.post("/notify_subscribers", auth, async (req, res) => {
 
     const sub = channel.subscriptions;
 
-    const payload = {
-      notification: {
-        title: req.body.name,
-        body: channel.name,
-        data: {
-          dateOfArrival: Date.now(),
-          primarykey: 1,
-          url: `${process.env.CLIENT_BASE_URL}/event/${req.body._id}`,
-        },
-        icon:
-          "https://res.cloudinary.com/dz3c3h3jx/image/upload/v1597244167/assets/android-icon-36x36_cdcmpe.png",
-        vibrate: [100, 50, 100],
-      },
-    };
-    const result = await Event.notify_subscribers(sub, payload);
+    // const payload = {
+    //   notification: {
+    //     title: req.body.name,
+    //     body: channel.name,
+    //     data: {
+    //       dateOfArrival: Date.now(),
+    //       primarykey: 1,
+    //       url: `${process.env.CLIENT_BASE_URL}/event/${req.body._id}`,
+    //     },
+    //     icon:
+    //       "https://res.cloudinary.com/dz3c3h3jx/image/upload/v1597244167/assets/android-icon-36x36_cdcmpe.png",
+    //     vibrate: [100, 50, 100],
+    //   },
+    // };
+    // const result = await Event.notify_subscribers(sub, payload);
 
-    res.status(200).json({ result });
+    res.status(200).json({ result: channel });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
